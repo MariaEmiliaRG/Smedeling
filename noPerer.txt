@@ -162,10 +162,34 @@ void record (score jugador, char nomarch[20])
 }
 void color (char letra, int c, int f)
 {
-    int colores [7] = {0,15,10,11,12,14,13};
-    char num[2]; 
+    int colores [0,15,10,11,12,14,13];
+    char num[1]; 
     num[0] = letra; 
-    subrayar(" ",15,colores[atoi(num)],c+1,f+1);
+    subrayar(num,0,colores[1],c+1,f+1);/*
+    switch (letra)
+           {
+           case '1':
+                textbackground(15);
+           break;
+           case '3':
+                textbackground(10);
+           break;
+           case '5':
+                textbackground(11);
+           break;
+           case '6':
+                textbackground(12);
+           break;
+           case '8':
+                textbackground(14);
+           break;
+           case '9':
+                textbackground(13);
+           break;
+           case '0':
+                textbackground(0);
+           break;
+           }*/
     return;   
 }
 void archivoLeer(int alto, int largo,int col, int reg,char nombre[9])
@@ -175,7 +199,12 @@ void archivoLeer(int alto, int largo,int col, int reg,char nombre[9])
      abrir(nombre,"r");
      for (f=0+alto;f<col+alto;f++)
         for (c=0+largo;c<reg+largo;c++)
-            color(fgetc(arch), c, f);
+            {
+            n=fgetc(arch);
+            color(n, c, f);
+            //gotoxy(c+1,f+1);
+            //printf(" ");
+            }
      fclose (arch);
      subrayar(" ",11,0,15,20);
      return; 
