@@ -13,15 +13,15 @@ FILE *arch;
 int x, y,a, b;// coordenadas para J1 y J2
 typedef struct score
 {
-        char nombre[9];
-        int puntos; 
+     char nombre[9];
+     int puntos; 
 };
-void subrayar (char n[30],int color, int fondo, int c, int r)
+void subrayar (char palabra[30],int color, int fondo, int c, int r)
 {
      gotoxy(c,r);
      textbackground(fondo);
      textcolor (color);
-     printf("%s",n);
+     printf("%s",palabra);
      return;
 }
 void emilia ()
@@ -31,13 +31,13 @@ void emilia ()
      printf("REALIZADO POR MAR%cA EMILIA RAM%cREZ G%cMEZ. 2017-2018",214,214,224);  
      return;
 }
-void borrar()
+void borrar()//limpiar la pantalla 
 {
      textbackground(0);
      clrscr();
      return;
 }
-void limpiar (char mat[][cmax])
+void limpiar (char mat[][cmax])//limpiar la matriz
 {
      int f,c;
      for (f=0; f<fmax; f++)
@@ -47,30 +47,26 @@ void limpiar (char mat[][cmax])
              }
      return;
 }
-void marco (char mat[][cmax], int color)
+void marco (char mat[][cmax], int color)//hacer marco para que choquen //tratar de resumirlo
 {
      int f,c;
-     char espacio[2];
-     strcpy(espacio," ");
-     a='1';
-     textbackground(2);
      for (f=fmin; f<=fmax; f++)//lineas verticales
          {
-                  mat[f-1][cmax-1]='3';
-                  mat[f-1][cmin-1]='3';
-                  subrayar(espacio,0,color,cmin,f);
-                  subrayar(espacio,0,color,cmax,f);
+         mat[f-1][cmax-1]='3';
+         mat[f-1][cmin-1]='3';
+         subrayar(" ",0,color,cmin,f);
+         subrayar(" ",0,color,cmax,f);
          } 
      for (c=cmin; c<=cmax; c++)//lineas horizontles
          {        
-                  mat[fmax-1][c-1]='3';
-                  mat[fmin-1][c-1]='3';
-                  subrayar(espacio,0,color,c,fmin);
-                  subrayar(espacio,0,color,c,fmax);  
+         mat[fmax-1][c-1]='3';
+         mat[fmin-1][c-1]='3';
+         subrayar(" ",0,color,c,fmin);
+         subrayar(" ",0,color,c,fmax);  
          }     
      return;
 }//Archivos
-void abrir(char archivo[15], char modo[3])
+void abrir(char archivo[15], char modo[3])//ya no es necesaria, o si?? mmmmm
 {
      arch=fopen(archivo,modo); 
      return; 
@@ -156,12 +152,12 @@ void record (score jugador, char nomarch[20])
      fclose(arch);
      abrir(nomarch,"wb");
      for (i=0; i<=2; i++) 
-            fwrite(&puntuaciones[i],sizeof(persona),1,arch);
+         fwrite(&puntuaciones[i],sizeof(persona),1,arch);
      fclose(arch);
      return; 
 }
-void color (char letra)
-{
+void color (char letra)//remplazar con un vector
+{//la funcion puede devolver el int, así podemos usar subrayar ;), al realizar lis cambios modificar función archivo leer
     switch (letra)
            {
            case '1':
@@ -195,7 +191,7 @@ void archivoLeer(int alto, int largo,int col, int reg,char nombre[9])
      abrir(nombre,"r");
      for (f=0+alto;f<col+alto;f++)
         for (c=0+largo;c<reg+largo;c++)
-            {
+            {//se puede resumir con subrayar 
             n=fgetc(arch);
             color(n);
             gotoxy(c+1,f+1);
@@ -205,7 +201,7 @@ void archivoLeer(int alto, int largo,int col, int reg,char nombre[9])
      subrayar(" ",11,0,15,20);
      return; 
 }
-void leerarchivos ()
+void leerarchivos ()//cuando estás en la opción -records-
 {
      score personas;
      int dif,vel,i;
@@ -221,10 +217,10 @@ void leerarchivos ()
              abrir(cdif,"rb");
              if (arch==NULL)
               crearscore(cdif);
-             for (i=1;i<4;i++)
+             for (i=1;i<4;i++)//resolver con calma para substituirlo con -subrayar- 
                  {
-                 gotoxy(20*vel,(7*dif)+i);
                  fread(&personas,sizeof(personas),1,arch);
+                 gotoxy(20*vel,(7*dif)+i);
                  printf("%i.%s ",i,personas.nombre);
                  gotoxy((20*vel)+10,(7*dif)+i);
                  printf("  %i",personas.puntos);
@@ -236,8 +232,8 @@ void leerarchivos ()
      return;
 }
 void nombre(char cad[9], int col, int reg,int color )
-{
-     char tecla; 
+{//-URGE- utilizar función subrayar
+     char tecla, a; 
      int cont=0; 
      emilia();
      while (tecla!=13)
@@ -485,8 +481,8 @@ void opcion(int inc,char tecla,char mat [][cmax],char l,char j,char i,char k, in
           }
      return; 
 }  
-void mensaje(char p1, char p2, char jugador2[9], char jugador1[9], int &punt1,int &punt2)
-{
+void mensaje(char p1, char p2, char jugador2[9], char jugador1[9], int &punt1,int &punt2)//colocar mensaje de puntos 
+{// podría ser que la cosa esta mostrara los números en grande :) 
      int *s1, *s2;
      s1=&punt1;
      s2=&punt2;
@@ -503,7 +499,7 @@ void mensaje(char p1, char p2, char jugador2[9], char jugador1[9], int &punt1,in
      return;
 }
 void coordenada (int &col, int &reg, int res1, int suma, int res2, int suma2, int color)
-{
+{//generar aleatoriamente la posisción 
      int *c,*r;
      c=&col;
      r=&reg;
@@ -514,8 +510,7 @@ void coordenada (int &col, int &reg, int res1, int suma, int res2, int suma2, in
 }
 void instrucciones(char arr[4],char ab [4],char der[4],char iz[4],int c,int r, int color, int dificultad, int n)
 {
-     gotoxy(4,2);
-     textcolor(15);
+     subrayar("",15,0,4,2);
      if (n==1)
         printf("DURANTE LAS SIGUIENTES TRES RONDAS OBTEN LA MAYOR CANTIDAD DE PUNTOS.\n    SI CHOCAS PIERDES."); 
      else
@@ -545,8 +540,7 @@ void dinamica (int velocidad, int dificultad)
     char pantalla [fmax][cmax], j1[9],j2[9];
     char p1,p2,n,n1,n2;// variables para el jugrador 1 y jugador 2;
     int rep,punt1,punt2;
-    textcolor(15);
-    gotoxy(3,22);
+    subrayar("",15,0,3,22);
     printf("PAUSA SE ACTIVA PRESIONANDO CUALQUIER TECLA DE CONTROL, FUNCI%CN O NAVEGACI%CN.",224,224);
     subrayar("INGRESA TU NOMBRE",13,0,11,6);
     instrucciones("W = ","S = ","D = ","A = ",40,6,13,dificultad,2);
@@ -560,7 +554,7 @@ void dinamica (int velocidad, int dificultad)
     punt2=0;
     while(punt1<=1&&punt2<=1)
         {  
-        if (punt1==1&&punt2==1)
+        if (punt1==1&&punt2==1)//'imagen' RONDA FINAL
            {
            borrar();
            archivoLeer(6,8,13,68,"fin.txt");
@@ -577,11 +571,11 @@ void dinamica (int velocidad, int dificultad)
         {
         n=getch();
         n=toupper(n);
-        if (n==68||n==65||n==87||n==83)
+        if (n==68||n==65||n==87||n==83)//teclas j1
            n1=n;
         else
             {
-            if (n==73||n==74||n==75||n==76)
+            if (n==73||n==74||n==75||n==76)//teclas j2
                n2=n;
             else
                    {
@@ -634,7 +628,7 @@ int dinamica2 (int velocidad, int dificultad)
         {
         if (rep==3)
            {
-           borrar();
+           borrar();//'imagen' RONDA FINAL
            archivoLeer(6,8,13,68,"fin.txt");
            Sleep(700);
            }
