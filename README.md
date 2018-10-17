@@ -1,3 +1,2 @@
 # Smedeling
-Proyecto C
-Hay cosas que se pueden reducir jajajaja.
+Cuida de Smedelingo <3
